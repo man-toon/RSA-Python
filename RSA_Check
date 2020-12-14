@@ -1,0 +1,21 @@
+def pq_ed_check():
+    p = int(input('p: '))  #first prime
+    q = int(input('q: '))  #second prime
+    c = (p - 1) * (q - 1)  #totient function
+    print(c)
+    e = int(input('e: '))  #encrypt number
+    d = int(input('d: '))  #decrypt number
+    z = (e * d) - 1
+    print(z)
+    if z % c == 0:
+        print('works')
+    else:
+        print('does not work')
+
+
+def decrypt_check():
+    cm = int(input('int: '))  #message or ciphertext
+    de = int(input('exponent: '))  #decrypt or encrypt number
+    n = int(input('mod: '))  #product of p & q
+    result = ((x ** y) % z)
+    print(result)

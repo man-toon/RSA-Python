@@ -1,0 +1,110 @@
+import math
+import random
+
+
+def main():
+    dict1 = {70: 'What is up?',
+             71: 'You are fast!',
+             72: 'All your trinkets belong to us.',
+             73: 'Someone on our team thinks someone on your team are in the same class.',
+             74: 'You are the weakest link.',
+             75: 'Encryption is fun;',
+             76: 'Spring is my favorite season',
+             77: 'Enjoy your morning beverage',
+             78: 'I am an early riser',
+             79: 'I am not an early riser',
+             80: 'Wake Tech is my school',
+             81: 'CSC 120 Computing Fundamentals',
+             82: 'Best wishes to you'}
+    p, q, n, x = pq_picker()
+    print(f'p: {p} q: {q} n:{n}')
+    e = e_picker(x, n, p, q)
+    print(f'e: {e}')
+    d, k = d_picker(e, x, n, p, q)
+    print(f'd: {d}')
+    m = message(dict1)
+    c = encode(m, e, n)
+    decode(c, d, n, dict1)
+
+
+def prime_check(y):
+    if y > 2:
+        for i in range(2, y):
+            if y % i == 0:
+                return True
+        return False
+    else:
+        return True
+
+
+def pq_picker():
+    prime_ex = (13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97)
+    print('Please enter two distinct prime integers for p and q. (The larger the better!)')
+    print(f'Prime integer examples: {prime_ex}\n')
+    p = int(input('p: '))
+    while prime_check(p):
+        print('That is either not a prime integer or it is not greater than 2.')
+        p = int(input('p: '))
+    q = int(input('q: '))
+    while prime_check(q):
+        print('That is either not a prime integer or it is not greater than 2.')
+        q = int(input('q: '))
+    n = p * q
+    x = (p-1) * (q-1)
+    return p, q, n, x
+
+
+def e_picker(x, n, p, q):
+    e = random.randrange(2, n)
+    gcd_check = math.gcd(e, x)
+    while gcd_check != 1 or e == p or e == q:
+        e = random.randrange(2, n)
+        gcd_check = math.gcd(e, x)
+    return e
+
+
+def d_picker(e, x, n, p, q):
+    k = 1
+    d = (k * x + 1) / e
+    while d == e or d == 1 or d == p or d == q or not d.is_integer():
+        d = (k * x + 1) / e
+        k += 1
+    try:
+        d = int(d)
+        if d >= n:
+            raise ValueError
+    except ValueError:
+        print("Cannot find a d to pair with e. Please try again with larger primes.\n\n")
+        main()
+    else:
+        return d, k
+
+
+def message(d):
+    print('\nDictionary: ')
+    for i in d:
+        print(f'{i}: {d[i]}')
+    m = int(input('\nPlease enter an integer from the dictionary above: '))
+    while 70 > m or m > 82:
+        m = int(input('\nPlease enter an integer from the dictionary above: '))
+    print(f'You chose: {m}: {d[m]}')
+    return m
+
+
+def encode(m, e, n):
+    c = m ** e % n
+    print(f'The encoded text is: {c}')
+    return c
+
+
+def decode(c, d, n, dict1):
+    f = c ** d % n
+    if f in dict1:
+        print(f'The decoded text is: {f} {dict1[f]}')
+    else:
+        print('\nError occurred while decoding. This can sometimes happen if the primes you selected are too small. '
+              'Please try again with larger primes.')
+    quit()
+
+
+main()
