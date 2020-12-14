@@ -1,0 +1,11 @@
+def prime_check(integer):
+    if y > 2:
+        if y % 2 != 0 or y % 3 != 0:
+            for i in range(5, y):
+                if y % i == 0:
+                    return False
+                return True
+        else:
+            return False
+    else:
+        return False
